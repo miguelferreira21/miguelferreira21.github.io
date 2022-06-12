@@ -10,7 +10,43 @@ function render() {
 
 function createScene() {
     scene = new THREE.Scene();
-    scene.add(new THREE.AxesHelper( 80 ));
+    scene.add(new THREE.AxesHelper( 30 ));
+}
+
+function createTableFeet(width, height, depth, x, y, z) {
+    const geometry = new THREE.BoxGeometry( width, height, depth);
+    const material = new THREE.MeshBasicMaterial( {color: 0x00ff00, wireframe: true} );
+    const cube = new THREE.Mesh( geometry, material );
+    cube.rotateZ(Math.PI / 2);
+    cube.rotateX(Math.PI / 4);
+    cube.position.x = x;
+    cube.position.y = y;
+    cube.position.z = z;
+    scene.add( cube );
+}
+
+function createTableTop(width, height, depth, x, y, z) {
+    const geometry = new THREE.BoxGeometry( width, height, depth);
+    const material = new THREE.MeshBasicMaterial( {color: 0x00ff00, wireframe: true} );
+    const cube = new THREE.Mesh( geometry, material );
+    cube.rotateX(Math.PI /2 );
+    cube.rotateZ(Math.PI / 4)
+    cube.position.x = x;
+    cube.position.y = y;
+    cube.position.z = z;
+    scene.add( cube );
+}
+
+function createStairs(width, height, depth, x, y, z) {
+    const geometry = new THREE.BoxGeometry( width, height, depth);
+    const material = new THREE.MeshBasicMaterial( {color: 0x00ff00, wireframe: true} );
+    const cube = new THREE.Mesh( geometry, material );
+    cube.rotateX(-Math.PI /2 );
+    cube.rotateZ(Math.PI / 4)
+    cube.position.x = x;
+    cube.position.y = y;
+    cube.position.z = z;
+    scene.add( cube );
 }
 
 function setCamera() {
@@ -77,6 +113,12 @@ function init() {
     document.body.appendChild(renderer.domElement);
 
     createScene();
+    createTableFeet(30,10,9,0,0,50);
+    createTableFeet(30,10,9,50,0,0);
+    createTableFeet(30,10,9,0,0,-50);
+    createTableFeet(30,10,9,-50,0,0);
+    createTableTop(46.5,46.5,0,21,30,21);
+    createStairs(46.5,10,9,35,0,35);
     setCamera();
 
     window.addEventListener("resize", onResize);
