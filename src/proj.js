@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-var renderer, scene, camera
+var renderer, scene, camera, spotLight
 var map = {};
 
 function render() {
@@ -12,6 +12,25 @@ function createScene() {
     scene = new THREE.Scene();
     scene.add(new THREE.AxesHelper( 10 ));
 }
+
+
+function createSpotlight(x,y,z) {
+   spotLight = new THREE.Object3D();
+    const material1 = new THREE.MeshBasicMaterial({ color: 0x808080});
+    const material2 = new THREE.MeshBasicMaterial({ color: 0xcca300});
+    const geometry1 = new THREE.ConeGeometry( 5, 10, 32 );
+    const geometry2 =  new THREE.SphereGeometry(2, 32, 16 );
+    const mesh1 = new THREE.Mesh(geometry1, material1);
+    const mesh2 = new THREE.Mesh(geometry2, material2);
+
+    spotLight.add(mesh1);
+    mesh2.position.y = mesh1.position.y - 5;
+    spotLight.add(mesh2);
+    spotLight.position.set(x,y,z);
+    scene.add(spotLight);
+
+}
+
 
 function createFloor(width, height, depth, x, y, z) {
     const geometry = new THREE.BoxGeometry( width, height, depth);
@@ -77,7 +96,19 @@ function createPiece2() {
 
 function createPiece3() {
 
+
+    
 }
+
+/*
+function createLight(x,y,z,fov,near,far) {
+    const spotLight = new THREE.SpotLight( 0xffffff );
+    spotLight.position.set( x, y, z );
+
+    spotLight.castShadow = true;
+
+    scene.add( spotLight );
+}*/
 
 function setCamera() {
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight,1,1000);
@@ -120,6 +151,9 @@ function keys() {
     if(map[89]) { // y
         
     }
+    if(map[90]) { // z
+        //createLight(-40,50,0);
+    }
 }
 
 function onKeyDown(event){ 
@@ -145,9 +179,9 @@ function createPodium() {
     createPiece1();
     createPiece2();
     createPiece3();
-    //createSpotlight();
-    //createSpotlight();
-    //createSpotlight();
+    createSpotlight(-40,60,0);
+    createSpotlight(-20,60,-20);
+    createSpotlight(0,60,-40);
 }
 
 function init() {
