@@ -49,18 +49,26 @@ function createStep(width, height, depth, x, y, z) {
 
 function createPiece1() {
     const geometry = new THREE.BufferGeometry();
+    // create a simple square shape. We duplicate the top left and bottom right
+    // vertices because each vertex needs to appear once per triangle.
+    const vertices = new Float32Array( [
+        -7.0, -7.0,  7.0,
+        7.0, -7.0,  5.0,
+        7.0,  7.0,  7.0,
 
-    const positions = [
-    0,   0, 0,    // v1
-    0, 500, 0,   // v2
-    0, 500, 500  // v3
-    ];
+        7.0,  7.0,  7.0,
+        -7.0,  7.0,  5.0,
+        -7.0, -7.0,  7.0
+    ] );
 
-    geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ) );
-    geometry.computeVertexNormals();
-
-    const object = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial() );
-    scene.add(object);
+    // itemSize = 3 because there are 3 values (components) per vertex
+    geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+    const material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
+    const mesh = new THREE.Mesh( geometry, material );
+    mesh.rotation.z = Math.PI / 4;
+    mesh.position.y = 40;
+    mesh.position.x = -40;
+    scene.add(mesh);
 }
 
 function createPiece2() {
