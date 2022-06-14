@@ -35,7 +35,7 @@ function createFeet(width, height, depth, x, y, z) {
     scene.add( cube );
 }
 
-function createStairs(width, height, depth, x, y, z) {
+function createStep(width, height, depth, x, y, z) {
     const geometry = new THREE.BoxGeometry( width, height, depth);
     const material = new THREE.MeshBasicMaterial( {color: 0x653B1D, wireframe: false} );
     const step  = new THREE.Mesh( geometry, material );
@@ -45,6 +45,30 @@ function createStairs(width, height, depth, x, y, z) {
     step.position.y = y;
     step.position.z = z;
     scene.add(step);
+}
+
+function createPiece1() {
+    const geometry = new THREE.BufferGeometry();
+
+    const positions = [
+    0,   0, 0,    // v1
+    0, 500, 0,   // v2
+    0, 500, 500  // v3
+    ];
+
+    geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ) );
+    geometry.computeVertexNormals();
+
+    const object = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial() );
+    scene.add(object);
+}
+
+function createPiece2() {
+
+}
+
+function createPiece3() {
+
 }
 
 function setCamera() {
@@ -104,13 +128,18 @@ function onKeyUp(event){
 
 function createPodium() {
     createFloor(120,46.5,0,0,20,0);
-    //function createTableFeet(width, height, depth, x, y, z)
     createFeet(30,10,9,50,5,20);
     createFeet(30,10,9,50,5,-20);
     createFeet(30,10,9,-50,5,-20);
     createFeet(30,10,9,-50,5,20);
-    createStairs(40,10,30,65,5,10);
-    createStairs(40,10,15,75,0,10);
+    createStep(40,10,30,65,5,10);
+    createStep(40,10,15,75,0,10);
+    createPiece1();
+    createPiece2();
+    createPiece3();
+    //createSpotlight();
+    //createSpotlight();
+    //createSpotlight();
 }
 
 function init() {
