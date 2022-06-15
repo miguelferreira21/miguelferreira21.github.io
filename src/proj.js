@@ -276,27 +276,31 @@ function onResize() {
 }
 
 
-function keys() {
-    'use strict';
 
+function updatePiecesPosition() {
     if(map[81]) { // q
-
+        piece1.rotation.y += Math.PI / 16;
     }
     if(map[87]) { // w
-        
+        piece1.rotation.y -= Math.PI / 16;
     }
     if(map[69]) { // e
-
+        piece2.rotation.y += Math.PI / 16;
     }
     if(map[82]) { // r
-
+        piece2.rotation.y -= Math.PI / 16;
     }
     if(map[84]) { // t
-        
+        piece3.rotation.y += Math.PI / 16;
     }
     if(map[89]) { // y
-        
+        piece3.rotation.y -= Math.PI / 16;
     }
+}
+
+
+function keys() {
+    'use strict';
     if(map[90]) { // z
         //createLight(-40,50,0);
     }
@@ -325,9 +329,9 @@ function createPodium() {
     createPiece1();
     createPiece2();
     createPiece3();
-    createSpotlight(-40,60,0);
-    createSpotlight(-20,60,-20);
-    createSpotlight(0,60,-40);
+    createSpotlight(-40,60,7);
+    createSpotlight(-3,60,7);
+    createSpotlight(30,60,7);
 }
 
 function init() {
@@ -350,6 +354,7 @@ function init() {
 function animate() {
     'use strict';
     render();
+    updatePiecesPosition();
     requestAnimationFrame(animate);
 }
 
