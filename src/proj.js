@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-var renderer, scene, camera, spotLight
+var renderer, scene, camera, spotLight, piece1, piece2, piece3
 var map = {};
 
 function render() {
@@ -67,60 +67,91 @@ function createStep(width, height, depth, x, y, z) {
 }
 
 function createPiece1() {
-    const geometry = new THREE.BufferGeometry();
-    const vertices = new Float32Array( [
-        -7.0, -7.0,  7.0,
-        7.0, -7.0,  5.0,
-        7.0,  7.0,  7.0,
-
-        7.0,  7.0,  7.0,
-        -7.0,  7.0,  5.0,
-        -7.0, -7.0,  7.0
-    ] );
-
-    geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    const material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
-    const mesh = new THREE.Mesh( geometry, material );
-    mesh.rotation.z = Math.PI / 4;
-    mesh.position.y = 40;
-    mesh.position.x = -40;
-    scene.add(mesh);
-}
-
-function createPiece2() {
-    const piece2 = new THREE.Object3D();
+    piece1 = new THREE.Object3D();
 
     var geometry = new THREE.BufferGeometry();
     var vertices = new Float32Array( [
-        -4.25, -7.0,  7.0,
-        4.25, -10.0,  7.0,
+        -6.0, -6.0,  6.0,
+        6.0, -6.0,  5.0,
+        6.0,  6.0,  6.0,
+    ] );
+
+    geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+    var material = new THREE.MeshBasicMaterial( { color: 0xEAEAEA } );
+    var mesh1 = new THREE.Mesh( geometry, material );
+
+    geometry = new THREE.BufferGeometry();
+    vertices = new Float32Array( [
+        6.0,  6.0,  6.0,
+        -6.0,  6.0,  5.0,
+        -6.0, -6.0,  6.0
+    ] );
+
+    geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+    material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
+    var mesh2 = new THREE.Mesh( geometry, material );
+
+    piece1.add(mesh1);
+    piece1.add(mesh2);
+    piece1.rotation.z = Math.PI / 4;
+    piece1.position.y = 37;
+    piece1.position.x = -40;
+    scene.add(piece1);
+}
+
+function createPiece2() {
+    piece2 = new THREE.Object3D();
+
+    var geometry = new THREE.BufferGeometry();
+    var vertices = new Float32Array( [
+        -6.25, -7.0,  7.0,
+        6.25, -10.0,  7.0,
         9.25,  -7.0,  7.0,      
         
-        4.25, -4.0,  7.0,
-        -4.25, -7.0,  7.0,
+        6.25, -3.7,  7.0,
+        -6.25, -7.0,  7.0,
         9.25,  -7.0,  7.0,  
     ] );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    var material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
+    var material = new THREE.MeshBasicMaterial( { color: 0xD0CDCD } );
     var mesh1 = new THREE.Mesh( geometry, material )
-    mesh1.rotation.z = Math.PI / 2;
-    mesh1.position.y = 35;
-    mesh1.position.x = -10;
     
+    geometry = new THREE.BufferGeometry();
+    var vertices = new Float32Array( [
+        -6.25, -7.0,  7.0,
+        6.25, -10.0,  7.0,
+        5.25,  -7.0,  7.0,      
+        
+        6.25, -3.7,  7.0,
+        -6.25, -7.0,  7.0,
+        5.25,  -7.0,  7.0, 
+        
+    ] );
+    geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+    material = new THREE.MeshBasicMaterial( { color: 0xF4EFEF } );
+    const mesh2 = new THREE.Mesh( geometry, material );
 
     geometry = new THREE.BufferGeometry();
     var vertices = new Float32Array( [
+        -6.25, -7.0,  7.1,
+        4.25, -9.6,  7.1,
+        5.25,  -7.0,  7.1,      
+        
+        4.25, -3.84,  7.1,
+        -6.25, -7.0,  7.1,
+        5.25,  -7.0,  7.1, 
         
     ] );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
     material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
-    const mesh2 = new THREE.Mesh( geometry, material );
+    const mesh3 = new THREE.Mesh( geometry, material );
     
-
-
-
     piece2.add(mesh1);
     piece2.add(mesh2);
+    piece2.add(mesh3);
+    piece2.rotation.z = Math.PI / 2;
+    piece2.position.y = 35;
+    piece2.position.x = -10;
     scene.add(piece2);
 
 }
