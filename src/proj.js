@@ -68,8 +68,6 @@ function createStep(width, height, depth, x, y, z) {
 
 function createPiece1() {
     const geometry = new THREE.BufferGeometry();
-    // create a simple square shape. We duplicate the top left and bottom right
-    // vertices because each vertex needs to appear once per triangle.
     const vertices = new Float32Array( [
         -7.0, -7.0,  7.0,
         7.0, -7.0,  5.0,
@@ -80,7 +78,6 @@ function createPiece1() {
         -7.0, -7.0,  7.0
     ] );
 
-    // itemSize = 3 because there are 3 values (components) per vertex
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
     const material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
     const mesh = new THREE.Mesh( geometry, material );
@@ -91,6 +88,40 @@ function createPiece1() {
 }
 
 function createPiece2() {
+    const piece2 = new THREE.Object3D();
+
+    var geometry = new THREE.BufferGeometry();
+    var vertices = new Float32Array( [
+        -4.25, -7.0,  7.0,
+        4.25, -10.0,  7.0,
+        9.25,  -7.0,  7.0,      
+        
+        4.25, -4.0,  7.0,
+        -4.25, -7.0,  7.0,
+        9.25,  -7.0,  7.0,  
+    ] );
+    geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+    var material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
+    var mesh1 = new THREE.Mesh( geometry, material )
+    mesh1.rotation.z = Math.PI / 2;
+    mesh1.position.y = 35;
+    mesh1.position.x = -10;
+    
+
+    geometry = new THREE.BufferGeometry();
+    var vertices = new Float32Array( [
+        
+    ] );
+    geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+    material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
+    const mesh2 = new THREE.Mesh( geometry, material );
+    
+
+
+
+    piece2.add(mesh1);
+    piece2.add(mesh2);
+    scene.add(piece2);
 
 }
 
