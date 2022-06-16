@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import  { VRButton } from 'vrbutton';
 
-var renderer, scene, camera, spotLight, piece1, piece2, piece3, shading
+var renderer, scene, pauseScene, camera, pauseCamera,ispause, spotLight, piece1, piece2, piece3, shading, directional
 var sceneObjects = [];
 var map = {};
 var lights = [];
@@ -9,7 +9,13 @@ var helpers = [];
 
 function render() {
     'use strict';
+    renderer.autoClear = false;
+    renderer.clear();
     renderer.render(scene, camera);
+    if (ispause){
+      renderer.clearDepth();
+      renderer.render(pauseScene, pauseCamera);
+    }
 }
 
 function createScene() {
@@ -31,6 +37,7 @@ function createScene() {
     createLight(0,-40,55,5,0.3,25);
     createLight(1,-3,55,5,0.3,25);
     createLight(2,30,55,5,0.3,25);
+    createDirectionalLight();
 }
 
 
@@ -281,6 +288,12 @@ function createLight(n,x,y,z,angle,distance) {
     helpers[n] = new THREE.SpotLightHelper(lights[n]);
 }
 
+
+function createDirectionalLight() {
+    directional = new THREE.DirectionalLight(0xffffff, 0.5);
+    directional.userData = {on: false};
+}
+
 function flickerLight(n) {
     if (lights[n].userData.on == true) {
         scene.remove(lights[n]);
@@ -292,6 +305,20 @@ function flickerLight(n) {
         scene.add(lights[n]);
         scene.add(helpers[n]);
         lights[n].userData.on = true;
+    }
+}
+
+function flickerDirLight() {
+    if (directional.userData.on == true) {
+        scene.remove(directional);
+        scene.remove(directional.target);
+        directional.userData.on = false;
+    }
+
+    else {
+        scene.add(directional);
+        scene.add(directional.target);
+        directional.userData.on = true;
     }
 }
 
@@ -372,22 +399,22 @@ function keys() {
     if(map[65]) { // a
         changeMaterials();
     } 
-    if(map[81]) { // q
+    if(map[81] && ispause == false) { // q
         updatePiecesPosition(1,0,0,0,0,0);
     }
-    if(map[87]) { // w
+    if(map[87] && ispause == false) { // w
         updatePiecesPosition(0,1,0,0,0,0);
     }
-    if(map[69]) { // e
+    if(map[69] && ispause == false) { // e
         updatePiecesPosition(0,0,1,0,0,0);
     }
-    if(map[82]) { // r
+    if(map[82] && ispause == false) { // r
         updatePiecesPosition(0,0,0,1,0,0);
     }
-    if(map[84]) { // t
+    if(map[84] && ispause == false) { // t
         updatePiecesPosition(0,0,0,0,1,0);
     }
-    if(map[89]) { // y
+    if(map[89] && ispause == false) { // y
         updatePiecesPosition(0,0,0,0,0,1);
     }
     if(map[90]) { // z
@@ -399,6 +426,27 @@ function keys() {
     if(map[67]) { // c
         flickerLight(2);
     }
+    if(map[68]) { // d
+        flickerDirLight();
+    }
+    if(map[66] && ispause == false) {
+        showPauseMessage();
+        ispause = true;
+    }
+}
+
+function showPauseMessage() {
+    pauseScene = new THREE.Scene();
+    pauseCamera = new THREE.OrthographicCamera(window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 1000);
+    pauseScene.add(pauseCamera);
+    const geometry = new THREE.PlaneGeometry( 30, 15);
+    const texture = new THREE.TextureLoader().load( 'textures/man.jpg' );
+    const material = new THREE.MeshBasicMaterial( {
+        map: texture
+    });
+    const plane = new THREE.Mesh( geometry, material );
+    pauseScene.add( plane );
+    scene.add(plane);
 }
 
 function onKeyDown(event){ 
@@ -421,7 +469,7 @@ function init() {
     document.body.appendChild(renderer.domElement);
     document.body.appendChild( VRButton.createButton( renderer ) );
     renderer.xr.enabled = true;
-
+    ispause = false;
     shading = false;
 
     createScene();
@@ -435,11 +483,11 @@ function init() {
 
 function animate() {
     'use strict';
-    render();
+    
     //requestAnimationFrame(animare);
     renderer.setAnimationLoop( function () {
 
-        renderer.render( scene, camera );
+        render();
     
     } );
 }
