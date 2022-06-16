@@ -504,7 +504,7 @@ function keys() {
     }
 
     if(map[82] && ispause == true) { // R (refresh)
-        window.location.reload();;
+        window.location.reload();
     }
 }
 
