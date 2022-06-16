@@ -2,6 +2,8 @@ import * as THREE from 'three';
 
 var renderer, scene, camera, spotLight, piece1, piece2, piece3
 var map = {};
+var lights = [];
+var helpers = [];
 
 function render() {
     'use strict';
@@ -246,15 +248,29 @@ function createPiece3() {
     scene.add(piece3);
 }
 
-/*
-function createLight(x,y,z,fov,near,far) {
-    const spotLight = new THREE.SpotLight( 0xffffff );
-    spotLight.position.set( x, y, z );
 
-    spotLight.castShadow = true;
+function createLight(n,x,y,z,angle,distance) {
+    lights[n] = new THREE.SpotLight();
+    lights[n].position.set( x, y, z );
+    lights[n].userData = {on: false};
+    lights[n].angle = angle;
+    lights[n].distance = distance;
+    helpers[n] = new THREE.SpotLightHelper(lights[n]);
+}
 
-    scene.add( spotLight );
-}*/
+function flickerLight(n) {
+    if (lights[n].userData.on == true) {
+        scene.remove(lights[n]);
+        scene.remove(helpers[n]);
+        lights[n].userData.on = false;
+    }
+
+    else {
+        scene.add(lights[n]);
+        scene.add(helpers[n]);
+        lights[n].userData.on = true;
+    }
+}
 
 function setCamera() {
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight,1,1000);
@@ -302,7 +318,13 @@ function updatePiecesPosition() {
 function keys() {
     'use strict';
     if(map[90]) { // z
-        //createLight(-40,50,0);
+        flickerLight(0);
+    }
+    if(map[88]) { // x
+        flickerLight(1);
+    }
+    if(map[67]) { // c
+        flickerLight(2);
     }
 }
 
@@ -332,6 +354,10 @@ function createPodium() {
     createSpotlight(-40,60,7);
     createSpotlight(-3,60,7);
     createSpotlight(30,60,7);
+    createLight(0,-40,55,5,0.3,25);
+    createLight(1,-3,55,5,0.3,25);
+    createLight(2,30,55,5,0.3,25);
+    
 }
 
 function init() {
