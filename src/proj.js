@@ -502,9 +502,10 @@ function keys() {
     if(map[83]) { //s
         ispause = !ispause;
     }
-
     if(map[82] && ispause == true) { // R (refresh)
-        window.location.reload();
+        scene.clear();
+        pauseScene.clear();
+        initScenes();
     }
 }
 
@@ -524,7 +525,6 @@ function showPauseMessage() {
     const plane = new THREE.Mesh( geometry, material );
     plane.position.set(0,15,20)
     pauseScene.add( plane );
-    //scene.add(plane);
 }
 
 function onKeyDown(event){ 
@@ -547,23 +547,28 @@ function init() {
     document.body.appendChild(renderer.domElement);
     document.body.appendChild( VRButton.createButton( renderer ) );
     renderer.xr.enabled = true;
-    ispause = false;
-    shading = false;
+    
 
-    createScene();
-    showPauseMessage();
-    setCamera(0, 60, 100, scene.position.x, scene.position.y, scene.position.z);
+    initScenes();
+
 
     window.addEventListener("resize", onResize);
     document.addEventListener("keydown", onKeyDown, true); 
     document.addEventListener("keyup", onKeyUp, true);
 }
 
+function initScenes() {
+    ispause = false;
+    shading = false;
+    createScene();
+    showPauseMessage();
+    setCamera(0, 60, 100, scene.position.x, scene.position.y, scene.position.z);
+}
+
 
 function animate() {
     'use strict';
-    
-    //requestAnimationFrame(animare);
+
     renderer.setAnimationLoop( function () {
 
         render();
