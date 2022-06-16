@@ -28,12 +28,12 @@ function createScene() {
     createFeet(30,10,9,-50,5,20);
     createStep(40,10,30,65,5,10);
     createStep(40,10,15,75,0,10);
-    createPiece1();
-    createPiece2();
-    createPiece3();
     createSpotlight(-40,60,7);
     createSpotlight(-3,60,7);
     createSpotlight(30,60,7);
+    createPiece1();
+    createPiece2();
+    createPiece3();
     createLight(0,-40,55,5,0.3,25);
     createLight(1,-3,55,5,0.3,25);
     createLight(2,30,55,5,0.3,25);
@@ -62,6 +62,7 @@ function createSpotlight(x,y,z) {
 function createFloor(width, height, depth, x, y, z) {
     const geometry = new THREE.BoxGeometry( width, height, depth);
     const material = new THREE.MeshLambertMaterial( {color: 0xA37758, wireframe: false} );
+    material.needsUpdate = true;
     const cube = new THREE.Mesh( geometry, material );
     cube.rotateX(Math.PI/2);
     cube.position.x = x;
@@ -139,7 +140,6 @@ function createPiece1() {
     piece1.position.y = 35;
     piece1.position.x = -40;
     scene.add(piece1);
-    sceneObjects.push(piece1);
 }
 
 function createPiece2() {
@@ -215,7 +215,6 @@ function createPiece2() {
     piece2.position.y = 35;
     piece2.position.x = -10;
     scene.add(piece2);
-    sceneObjects.push(piece2);
 }
 
 function createPiece3() {
@@ -330,7 +329,6 @@ function createPiece3() {
     piece3.position.y = 35;
     piece3.position.x = 30;
     scene.add(piece3);
-    sceneObjects.push(piece3);
 }
 
 
@@ -431,7 +429,14 @@ function changeMaterials() {
             else if(i < 7) {
                 sceneObjects[i].material = new THREE.MeshPhongMaterial( {color: 0x653B1D, wireframe: false} );
             }
+            else if(i < 10) {
+                sceneObjects[i].material = new THREE.MeshPhongMaterial({ color: 0x808080});
+            }
         }
+        piece1.material = new THREE.MeshPhongMaterial( {color: 0xA37758, wireframe: false} );
+        piece2.material = new THREE.MeshPhongMaterial( {color: 0xA37758, wireframe: false} );
+        piece3.material = new THREE.MeshPhongMaterial( {color: 0xA37758, wireframe: false} );
+        render();
     }
     else {
         shading = false;
@@ -442,7 +447,14 @@ function changeMaterials() {
             else if(i < 7) {
                 sceneObjects[i].material = new THREE.MeshLambertMaterial( {color: 0x653B1D, wireframe: false} );
             }
+            else if(i < 10) {
+                sceneObjects[i].material = new THREE.MeshLambertMaterial({ color: 0x808080});
+            }
         }
+        piece1.material = new THREE.MeshLambertMaterial( {color: 0xA37758, wireframe: false} );
+        piece2.material = new THREE.MeshLambertMaterial( {color: 0xA37758, wireframe: false} );
+        piece3.material = new THREE.MeshLambertMaterial( {color: 0xA37758, wireframe: false} );
+        render();
     }
 }
 
