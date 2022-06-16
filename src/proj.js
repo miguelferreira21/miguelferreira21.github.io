@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
-var renderer, scene, camera, spotLight, piece1, piece2, piece3
+var renderer, scene, camera, spotLight, piece1, piece2, piece3, shading
+var sceneObjects = [];
 var map = {};
 var lights = [];
 var helpers = [];
@@ -13,13 +14,29 @@ function render() {
 function createScene() {
     scene = new THREE.Scene();
     scene.add(new THREE.AxesHelper( 10 ));
+    createFloor(120,46.5,0,0,20,0);
+    createFeet(30,10,9,50,5,20);
+    createFeet(30,10,9,50,5,-20);
+    createFeet(30,10,9,-50,5,-20);
+    createFeet(30,10,9,-50,5,20);
+    createStep(40,10,30,65,5,10);
+    createStep(40,10,15,75,0,10);
+    createPiece1();
+    createPiece2();
+    createPiece3();
+    createSpotlight(-40,60,7);
+    createSpotlight(-3,60,7);
+    createSpotlight(30,60,7);
+    createLight(0,-40,55,5,0.3,25);
+    createLight(1,-3,55,5,0.3,25);
+    createLight(2,30,55,5,0.3,25);
 }
 
 
 function createSpotlight(x,y,z) {
    spotLight = new THREE.Object3D();
-    const material1 = new THREE.MeshBasicMaterial({ color: 0x808080});
-    const material2 = new THREE.MeshBasicMaterial({ color: 0xcca300});
+    const material1 = new THREE.MeshLambertMaterial({ color: 0x808080});
+    const material2 = new THREE.MeshLambertMaterial({ color: 0xcca300});
     const geometry1 = new THREE.ConeGeometry( 5, 10, 32 );
     const geometry2 =  new THREE.SphereGeometry(2, 32, 16 );
     const mesh1 = new THREE.Mesh(geometry1, material1);
@@ -30,35 +47,37 @@ function createSpotlight(x,y,z) {
     spotLight.add(mesh2);
     spotLight.position.set(x,y,z);
     scene.add(spotLight);
-
+    sceneObjects.push(spotLight);
 }
 
 
 function createFloor(width, height, depth, x, y, z) {
     const geometry = new THREE.BoxGeometry( width, height, depth);
-    const material = new THREE.MeshBasicMaterial( {color: 0xA37758, wireframe: false} );
+    const material = new THREE.MeshLambertMaterial( {color: 0xA37758, wireframe: false} );
     const cube = new THREE.Mesh( geometry, material );
     cube.rotateX(Math.PI/2);
     cube.position.x = x;
     cube.position.y = y;
     cube.position.z = z;
     scene.add( cube );
+    sceneObjects.push(cube);
 }
 
 function createFeet(width, height, depth, x, y, z) {
     const geometry = new THREE.BoxGeometry( width, height, depth);
-    const material = new THREE.MeshBasicMaterial( {color: 0xA37758, wireframe: false} );
+    const material = new THREE.MeshLambertMaterial( {color: 0xA37758, wireframe: false} );
     const cube = new THREE.Mesh( geometry, material );
     cube.rotateZ(Math.PI / 2);
     cube.position.x = x;
     cube.position.y = y;
     cube.position.z = z;
     scene.add( cube );
+    sceneObjects.push(cube);
 }
 
 function createStep(width, height, depth, x, y, z) {
     const geometry = new THREE.BoxGeometry( width, height, depth);
-    const material = new THREE.MeshBasicMaterial( {color: 0x653B1D, wireframe: false} );
+    const material = new THREE.MeshLambertMaterial( {color: 0x653B1D, wireframe: false} );
     const step  = new THREE.Mesh( geometry, material );
     step.rotateX(-Math.PI/2);
     step.rotateZ(Math.PI/2);
@@ -66,6 +85,7 @@ function createStep(width, height, depth, x, y, z) {
     step.position.y = y;
     step.position.z = z;
     scene.add(step);
+    sceneObjects.push(step);
 }
 
 function createPiece1() {
@@ -79,7 +99,7 @@ function createPiece1() {
     ] );
 
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    var material = new THREE.MeshBasicMaterial( { color: 0xEAEAEA } );
+    var material = new THREE.MeshLambertMaterial( { color: 0xEAEAEA } );
     var mesh1 = new THREE.Mesh( geometry, material );
 
     geometry = new THREE.BufferGeometry();
@@ -90,7 +110,7 @@ function createPiece1() {
     ] );
 
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
+    material = new THREE.MeshLambertMaterial( { color: 0xFFFFFF } );
     var mesh2 = new THREE.Mesh( geometry, material );
 
     piece1.add(mesh1);
@@ -99,6 +119,7 @@ function createPiece1() {
     piece1.position.y = 35;
     piece1.position.x = -40;
     scene.add(piece1);
+    sceneObjects.push(piece1);
 }
 
 function createPiece2() {
@@ -115,7 +136,7 @@ function createPiece2() {
         9.25,  -7.0,  7.0,  
     ] );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    var material = new THREE.MeshBasicMaterial( { color: 0xD0CDCD } );
+    var material = new THREE.MeshLambertMaterial( { color: 0xD0CDCD } );
     var mesh1 = new THREE.Mesh( geometry, material )
     
     geometry = new THREE.BufferGeometry();
@@ -130,7 +151,7 @@ function createPiece2() {
         
     ] );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    material = new THREE.MeshBasicMaterial( { color: 0xF4EFEF } );
+    material = new THREE.MeshLambertMaterial( { color: 0xF4EFEF } );
     const mesh2 = new THREE.Mesh( geometry, material );
 
     geometry = new THREE.BufferGeometry();
@@ -145,7 +166,7 @@ function createPiece2() {
         
     ] );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
+    material = new THREE.MeshLambertMaterial( { color: 0xFFFFFF } );
     const mesh3 = new THREE.Mesh( geometry, material );
     
     piece2.add(mesh1);
@@ -155,7 +176,7 @@ function createPiece2() {
     piece2.position.y = 35;
     piece2.position.x = -10;
     scene.add(piece2);
-
+    sceneObjects.push(piece2);
 }
 
 function createPiece3() {
@@ -177,7 +198,7 @@ function createPiece3() {
     ] );
 
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    var material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
+    var material = new THREE.MeshLambertMaterial( { color: 0xFFFFFF } );
     const mesh1 = new THREE.Mesh( geometry, material );
 
     geometry = new THREE.BufferGeometry();
@@ -196,7 +217,7 @@ function createPiece3() {
     ] );
 
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
+    material = new THREE.MeshLambertMaterial( { color: 0xFFFFFF } );
     const mesh2 = new THREE.Mesh( geometry, material );
     mesh2.position.x -= 0.5;
     mesh2.position.y -= 0.2;
@@ -217,7 +238,7 @@ function createPiece3() {
     ] );
 
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    material = new THREE.MeshBasicMaterial( { color: 0xD5D4D4 } );
+    material = new THREE.MeshLambertMaterial( { color: 0xD5D4D4 } );
     const mesh3 = new THREE.Mesh( geometry, material );
 
     geometry = new THREE.BufferGeometry();
@@ -236,7 +257,7 @@ function createPiece3() {
     ] );
 
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    material = new THREE.MeshBasicMaterial( { color: 0xF0F0F0 } );
+    material = new THREE.MeshLambertMaterial( { color: 0xF0F0F0 } );
     const mesh4 = new THREE.Mesh( geometry, material );
 
     piece3.add(mesh1);
@@ -246,6 +267,7 @@ function createPiece3() {
     piece3.position.y = 35;
     piece3.position.x = 30;
     scene.add(piece3);
+    sceneObjects.push(piece3);
 }
 
 
@@ -292,31 +314,75 @@ function onResize() {
 }
 
 
-
-function updatePiecesPosition() {
-    if(map[81]) { // q
+function updatePiecesPosition(left_1, right_1, left_2, right_2, left_3, right_3) {
+    if(left_1) { // q
         piece1.rotation.y += Math.PI / 16;
     }
-    if(map[87]) { // w
+    if(right_1) { // w
         piece1.rotation.y -= Math.PI / 16;
     }
-    if(map[69]) { // e
+    if(left_2) { // e
         piece2.rotation.y += Math.PI / 16;
     }
-    if(map[82]) { // r
+    if(right_2) { // r
         piece2.rotation.y -= Math.PI / 16;
     }
-    if(map[84]) { // t
+    if(left_3) { // t
         piece3.rotation.y += Math.PI / 16;
     }
-    if(map[89]) { // y
+    if(right_3) { // y
         piece3.rotation.y -= Math.PI / 16;
     }
 }
 
+function changeMaterials() {
+    if(!shading) {
+        shading = true;
+        for (let i = 0; i < sceneObjects.length; i++) {
+            if (i < 5) {
+                sceneObjects[i].material = new THREE.MeshPhongMaterial( {color: 0xA37758, wireframe: false} );
+            }
+            else if(i < 7) {
+                sceneObjects[i].material = new THREE.MeshPhongMaterial( {color: 0x653B1D, wireframe: false} );
+            }
+        }
+    }
+    else {
+        shading = false;
+        for (let i = 0; i < sceneObjects.length; i++) {
+            if (i < 5) {
+                sceneObjects[i].material = new THREE.MeshLambertMaterial( {color: 0xA37758, wireframe: false} );
+            }
+            else if(i < 7) {
+                sceneObjects[i].material = new THREE.MeshLambertMaterial( {color: 0x653B1D, wireframe: false} );
+            }
+        }
+    }
+}
 
 function keys() {
     'use strict';
+    if(map[65]) { // a
+        changeMaterials();
+    } 
+    if(map[81]) { // q
+        updatePiecesPosition(1,0,0,0,0,0);
+    }
+    if(map[87]) { // w
+        updatePiecesPosition(0,1,0,0,0,0);
+    }
+    if(map[69]) { // e
+        updatePiecesPosition(0,0,1,0,0,0);
+    }
+    if(map[82]) { // r
+        updatePiecesPosition(0,0,0,1,0,0);
+    }
+    if(map[84]) { // t
+        updatePiecesPosition(0,0,0,0,1,0);
+    }
+    if(map[89]) { // y
+        updatePiecesPosition(0,0,0,0,0,1);
+    }
     if(map[90]) { // z
         flickerLight(0);
     }
@@ -339,27 +405,6 @@ function onKeyUp(event){
     map[keyCode] = false;
 }
 
-
-function createPodium() {
-    createFloor(120,46.5,0,0,20,0);
-    createFeet(30,10,9,50,5,20);
-    createFeet(30,10,9,50,5,-20);
-    createFeet(30,10,9,-50,5,-20);
-    createFeet(30,10,9,-50,5,20);
-    createStep(40,10,30,65,5,10);
-    createStep(40,10,15,75,0,10);
-    createPiece1();
-    createPiece2();
-    createPiece3();
-    createSpotlight(-40,60,7);
-    createSpotlight(-3,60,7);
-    createSpotlight(30,60,7);
-    createLight(0,-40,55,5,0.3,25);
-    createLight(1,-3,55,5,0.3,25);
-    createLight(2,30,55,5,0.3,25);
-    
-}
-
 function init() {
     'use strict';
     renderer = new THREE.WebGLRenderer({
@@ -368,8 +413,9 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
+    shading = false;
+
     createScene();
-    createPodium();
     setCamera();
 
     window.addEventListener("resize", onResize);
@@ -380,7 +426,6 @@ function init() {
 function animate() {
     'use strict';
     render();
-    updatePiecesPosition();
     requestAnimationFrame(animate);
 }
 
