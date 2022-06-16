@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import  { VRButton } from 'vrbutton';
 
 var renderer, scene, camera, spotLight, piece1, piece2, piece3, shading
 var sceneObjects = [];
@@ -294,12 +295,12 @@ function flickerLight(n) {
     }
 }
 
-function setCamera() {
+function setCamera(x, y, z, lookX, lookY, lookZ) {
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight,1,1000);
-    camera.position.x = 0;
-    camera.position.y = 50;
-    camera.position.z = 100;
-    camera.lookAt(scene.position);
+    camera.position.x = x;
+    camera.position.y = y;
+    camera.position.z = z;
+    camera.lookAt(lookX, lookY, lookZ);
 }
 
 function onResize() {
@@ -362,6 +363,12 @@ function changeMaterials() {
 
 function keys() {
     'use strict';
+    if(map[49]) { // 1
+        setCamera(0, 60, 100, scene.position.x, scene.position.y, scene.position.z);
+    }
+    if(map[50]) { // 2
+        setCamera(0, 30, 50, 0, 30, 0);
+    }
     if(map[65]) { // a
         changeMaterials();
     } 
@@ -412,21 +419,29 @@ function init() {
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
+    document.body.appendChild( VRButton.createButton( renderer ) );
+    renderer.xr.enabled = true;
 
     shading = false;
 
     createScene();
-    setCamera();
+    setCamera(0, 60, 100, scene.position.x, scene.position.y, scene.position.z);
 
     window.addEventListener("resize", onResize);
     document.addEventListener("keydown", onKeyDown, true); 
     document.addEventListener("keyup", onKeyUp, true);
 }
 
+
 function animate() {
     'use strict';
     render();
-    requestAnimationFrame(animate);
+    //requestAnimationFrame(animare);
+    renderer.setAnimationLoop( function () {
+
+        renderer.render( scene, camera );
+    
+    } );
 }
 
 init();
