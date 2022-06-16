@@ -85,6 +85,7 @@ function createFeet(width, height, depth, x, y, z) {
 
 function createStep(width, height, depth, x, y, z) {
     const geometry = new THREE.BoxGeometry( width, height, depth);
+    geometry.computeVertexNormals();
     const material = new THREE.MeshLambertMaterial( {color: 0x653B1D, wireframe: false} );
     const step  = new THREE.Mesh( geometry, material );
     step.rotateX(-Math.PI/2);
@@ -115,7 +116,8 @@ function createPiece1() {
 
     geometry.setAttribute( 'uv', new THREE.BufferAttribute( uvs, 2 ) );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    var material = new THREE.MeshLambertMaterial( { map: texture } );
+    geometry.computeVertexNormals();
+    var material = new THREE.MeshLambertMaterial( { map: texture, side: THREE.DoubleSide } );
     var mesh1 = new THREE.Mesh( geometry, material );
 
     geometry = new THREE.BufferGeometry();
@@ -127,7 +129,8 @@ function createPiece1() {
 
     geometry.setAttribute( 'uv', new THREE.BufferAttribute( uvs, 2 ) );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    material = new THREE.MeshLambertMaterial( { map: texture } );
+    geometry.computeVertexNormals();
+    material = new THREE.MeshLambertMaterial( { map: texture, side: THREE.DoubleSide } );
     var mesh2 = new THREE.Mesh( geometry, material );
 
     piece1.add(mesh1);
@@ -167,7 +170,8 @@ function createPiece2() {
 
     geometry.setAttribute( 'uv', new THREE.BufferAttribute( uvs, 2 ) );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    var material = new THREE.MeshLambertMaterial( { map: texture } );
+    geometry.computeVertexNormals();
+    var material = new THREE.MeshLambertMaterial( { map: texture, side: THREE.DoubleSide } );
     var mesh1 = new THREE.Mesh( geometry, material )
     
     geometry = new THREE.BufferGeometry();
@@ -183,7 +187,8 @@ function createPiece2() {
     ] );
     geometry.setAttribute( 'uv', new THREE.BufferAttribute( uvs, 2 ) );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    material = new THREE.MeshLambertMaterial( { map: texture } );
+    geometry.computeVertexNormals();
+    material = new THREE.MeshLambertMaterial( { map: texture, side: THREE.DoubleSide  } );
     const mesh2 = new THREE.Mesh( geometry, material );
 
     geometry = new THREE.BufferGeometry();
@@ -199,7 +204,8 @@ function createPiece2() {
     ] );
     geometry.setAttribute( 'uv', new THREE.BufferAttribute( uvs, 2 ) );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    material = new THREE.MeshLambertMaterial( { map: texture } );
+    geometry.computeVertexNormals();
+    material = new THREE.MeshLambertMaterial( { map: texture, side: THREE.DoubleSide  } );
     const mesh3 = new THREE.Mesh( geometry, material );
     
     piece2.add(mesh1);
@@ -248,7 +254,8 @@ function createPiece3() {
 
     geometry.setAttribute( 'uv', new THREE.BufferAttribute( uvs, 2 ) );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    var material = new THREE.MeshLambertMaterial( { map: texture } );
+    geometry.computeVertexNormals();
+    var material = new THREE.MeshLambertMaterial( { map: texture, side: THREE.DoubleSide  } );
     const mesh1 = new THREE.Mesh( geometry, material );
 
     geometry = new THREE.BufferGeometry();
@@ -268,7 +275,8 @@ function createPiece3() {
 
     geometry.setAttribute( 'uv', new THREE.BufferAttribute( uvs, 2 ) );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    material = new THREE.MeshLambertMaterial( { map: texture } );
+    geometry.computeVertexNormals();
+    material = new THREE.MeshLambertMaterial( { map: texture, side: THREE.DoubleSide  } );
     const mesh2 = new THREE.Mesh( geometry, material );
     mesh2.position.x -= 0.5;
     mesh2.position.y -= 0.2;
@@ -290,7 +298,8 @@ function createPiece3() {
 
     geometry.setAttribute( 'uv', new THREE.BufferAttribute( uvs, 2 ) );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    material = new THREE.MeshLambertMaterial( { map: texture } );
+    geometry.computeVertexNormals();
+    material = new THREE.MeshLambertMaterial( { map: texture, side: THREE.DoubleSide  } );
     const mesh3 = new THREE.Mesh( geometry, material );
 
     geometry = new THREE.BufferGeometry();
@@ -310,7 +319,8 @@ function createPiece3() {
 
     geometry.setAttribute( 'uv', new THREE.BufferAttribute( uvs, 2 ) );
     geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    material = new THREE.MeshLambertMaterial( { map: texture } );
+    geometry.computeVertexNormals();
+    material = new THREE.MeshLambertMaterial( { map: texture, side: THREE.DoubleSide  } );
     const mesh4 = new THREE.Mesh( geometry, material );
 
     piece3.add(mesh1);
@@ -335,7 +345,10 @@ function createLight(n,x,y,z,angle,distance) {
 
 
 function createDirectionalLight() {
-    directional = new THREE.DirectionalLight(0xffffff, 0.5);
+    directional = new THREE.DirectionalLight(0xffffff, 1);
+    directional.position.x = 0;
+    directional.position.y = 70;
+    directional.position.z = 40;
     directional.userData = {on: false};
 }
 
