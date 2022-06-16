@@ -12,7 +12,7 @@ function render() {
     renderer.autoClear = false;
     renderer.clear();
     renderer.render(scene, camera);
-    if (ispause){
+    if (ispause == true){
       renderer.clearDepth();
       renderer.render(pauseScene, pauseCamera);
     }
@@ -478,7 +478,7 @@ function keys() {
     if(map[69] && ispause == false) { // e
         updatePiecesPosition(0,0,1,0,0,0);
     }
-    if(map[82] && ispause == false) { // r
+    if(map[82] && ispause == false) { // r (move piece)
         updatePiecesPosition(0,0,0,1,0,0);
     }
     if(map[84] && ispause == false) { // t
@@ -499,24 +499,32 @@ function keys() {
     if(map[68]) { // d
         flickerDirLight();
     }
-    if(map[66] && ispause == false) {
-        showPauseMessage();
-        ispause = true;
+    if(map[83]) { //s
+        ispause = !ispause;
+    }
+
+    if(map[82] && ispause == true) { // R (refresh)
+        window.location.reload();;
     }
 }
 
 function showPauseMessage() {
     pauseScene = new THREE.Scene();
-    pauseCamera = new THREE.OrthographicCamera(window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 1000);
+    pauseCamera = new THREE.OrthographicCamera(100 / - 2, 100 / 2, 30 / 2, 30 / - 2, 1, 1000);
+    pauseCamera.position.x = 0;
+    pauseCamera.position.y = 60;
+    pauseCamera.position.z = 100;
+    pauseCamera.lookAt(pauseScene.position.x,pauseScene.position.y,pauseScene.position.z);
     pauseScene.add(pauseCamera);
-    const geometry = new THREE.PlaneGeometry( 30, 15);
-    const texture = new THREE.TextureLoader().load( 'textures/man.jpg' );
+    const geometry = new THREE.PlaneGeometry(50, 20);
+    const texture = new THREE.TextureLoader().load( './src/textures/man.jpg' );
     const material = new THREE.MeshBasicMaterial( {
         map: texture
     });
     const plane = new THREE.Mesh( geometry, material );
+    plane.position.set(0,15,20)
     pauseScene.add( plane );
-    scene.add(plane);
+    //scene.add(plane);
 }
 
 function onKeyDown(event){ 
@@ -543,6 +551,7 @@ function init() {
     shading = false;
 
     createScene();
+    showPauseMessage();
     setCamera(0, 60, 100, scene.position.x, scene.position.y, scene.position.z);
 
     window.addEventListener("resize", onResize);
