@@ -530,7 +530,7 @@ function keys() {
     if(map[32]) { // spacebar
         ispause = !ispause;
     }
-    if(map[51] && ispause == true) { // R (refresh)
+    if(map[51] && ispause == true) { //3
         scene.clear();
         pauseScene.clear();
         initScenes();
