@@ -34,9 +34,9 @@ function createScene() {
     createPiece1();
     createPiece2();
     createPiece3();
-    createLight(0,-40,55,5,0.3,25);
-    createLight(1,-3,55,5,0.3,25);
-    createLight(2,30,55,5,0.3,25);
+    createLight(0,-40,55,5,Math.PI/4,25);
+    createLight(1,-3,55,5,Math.PI/4,25);
+    createLight(2,30,55,5,Math.PI/4,25);
     createDirectionalLight();
 }
 
@@ -333,12 +333,40 @@ function createPiece3() {
 
 
 function createLight(n,x,y,z,angle,distance) {
-    lights[n] = new THREE.SpotLight();
-    lights[n].position.set( x, y, z );
-    lights[n].userData = {on: false};
-    lights[n].angle = angle;
-    lights[n].distance = distance;
-    helpers[n] = new THREE.SpotLightHelper(lights[n]);
+    const light = new THREE.SpotLight( 0xffffff );
+    light.position.set( x, y, z );
+    light.angle = angle;
+    if(n == 0) {
+        const targetObject = new THREE.Object3D();
+        targetObject.position.set(-40, 35, 0);
+        scene.add(targetObject);
+
+        light.target = targetObject;
+    }
+    else if(n == 1) {
+        light.target = piece2;
+        scene.add( light.target );
+    }
+    else if(n == 2) light.target = piece3
+
+    //light.castShadow = true;
+
+    //light.shadow.mapSize.width = 1024;
+    //light.shadow.mapSize.height = 1024;
+
+    //light.shadow.camera.near = 500;
+    //light.shadow.camera.far = 4000;
+    //light.shadow.camera.fov = 30;
+    const help = new THREE.SpotLightHelper(light);
+
+    lights.push(light)
+    helpers.push(help)
+    //lights[n] = new THREE.SpotLight(0xffffff,10);
+    //lights[n].position.set( x, y, z );
+    //lights[n].userData = {on: false};
+    //lights[n].angle = angle;
+    //lights[n].distance = distance;
+    //helpers[n] = new THREE.SpotLightHelper(lights[n]);
 }
 
 
@@ -351,16 +379,16 @@ function createDirectionalLight() {
 }
 
 function flickerLight(n) {
-    if (lights[n].userData.on == true) {
+    if (lights[n].userData.on) {
         scene.remove(lights[n]);
         scene.remove(helpers[n]);
         lights[n].userData.on = false;
     }
 
     else {
+        lights[n].userData.on = true;
         scene.add(lights[n]);
         scene.add(helpers[n]);
-        lights[n].userData.on = true;
     }
 }
 
@@ -499,10 +527,10 @@ function keys() {
     if(map[68]) { // d
         flickerDirLight();
     }
-    if(map[83]) { //s
+    if(map[32]) { // spacebar
         ispause = !ispause;
     }
-    if(map[82] && ispause == true) { // R (refresh)
+    if(map[51] && ispause == true) { // R (refresh)
         scene.clear();
         pauseScene.clear();
         initScenes();
