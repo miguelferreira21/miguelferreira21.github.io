@@ -5,7 +5,6 @@ var renderer, scene, pauseScene, camera, pauseCamera,ispause, spotLight, piece1,
 var sceneObjects = [];
 var map = {};
 var lights = [];
-var helpers = [];
 
 function render() {
     'use strict';
@@ -350,9 +349,7 @@ function createLight(n,x,y,z) {
         light.angle = Math.PI/4;
         light.target.updateMatrixWorld();
     }
-    const help = new THREE.SpotLightHelper(light);
     lights.push(light)
-    helpers.push(help)
 }
 
 
@@ -367,14 +364,12 @@ function createDirectionalLight() {
 function flickerLight(n) {
     if (lights[n].userData.on) {
         scene.remove(lights[n]);
-        scene.remove(helpers[n]);
         lights[n].userData.on = false;
     }
 
     else {
         lights[n].userData.on = true;
         scene.add(lights[n]);
-        scene.add(helpers[n]);
     }
 }
 
