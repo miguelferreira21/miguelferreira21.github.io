@@ -506,6 +506,13 @@ function keys() {
         scene.clear();
         pauseScene.clear();
         initScenes();
+        const session = renderer.xr.getSession();
+
+        if ( session !== null ) {
+          
+          session.end();
+        
+        }
     }
 }
 
