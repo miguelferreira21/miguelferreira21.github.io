@@ -1,5 +1,5 @@
-import * as THREE from 'three';
-import  { VRButton } from 'vrbutton';
+import * as THREE from './three.module.js';
+import  { VRButton } from './VRButton.js';
 
 var renderer, scene, pauseScene, camera, pauseCamera,ispause, spotLight, piece1, piece2, piece3, shading, directional
 var sceneObjects = [];

@@ -9,16 +9,12 @@
                 background-color: #fff;
                 overflow: hidden; }
         </style>
+        <script type="module" src="src/proj.js"></script>
     </head>
     <body>      
-        <script type="importmap">
-            {
-                "imports": {
-                    "three": "https://unpkg.com/three@0.141.0/build/three.module.js",
-                    "vrbutton": "https://unpkg.com/three@0.141.0/examples/jsm/webxr/VRButton.js"
-                }
-            }
+        <script>
+            init();
+            animate();
         </script>
-        <script type="module" src="src/proj.js"></script>
     </body>
 </html>
